@@ -12,7 +12,7 @@ package mainpackage;
 public class Main {
     //Clase principal <--------- SM
     public static void main(String[] args){
-        //ESPACIOS y el ENTER
+
         
         
     }
