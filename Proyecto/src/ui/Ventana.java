@@ -5,16 +5,40 @@
  */
 package ui;
 
+import com.mysql.jdbc.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author windiurno
  */
 public class Ventana extends javax.swing.JFrame {
-
-    /**
-     * Creates new form Ventana
-     */
+    
+    //Necesario para la conexion
+    String connectionUrl = null;
+    java.sql.Connection con = null;
+    
+    //Necesario para la ejecución de sentencias
+    static private Statement sentencia;
+    
+    
     public Ventana() {
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            
+            connectionUrl = "jdbc:mysql://localhost/instituto?" + "user=root&password=admin&useSSL=false";
+            con = DriverManager.getConnection(connectionUrl);
+            //Conexión con la base de datos establecida
+            
+        }catch (Exception e) {
+            System.out.println("No se ha encontrado la base de datos 'instituto'");
+        }
+        
         initComponents();
     }
 
@@ -27,31 +51,67 @@ public class Ventana extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        pIntro = new javax.swing.JPanel();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        bCrearTablas = new javax.swing.JButton();
         jMenuBar1 = new javax.swing.JMenuBar();
-        mCrearTabla = new javax.swing.JMenu();
-        jMenuItem1 = new javax.swing.JMenuItem();
-        jMenuItem2 = new javax.swing.JMenuItem();
-        jMenuItem3 = new javax.swing.JMenuItem();
-        jMenuItem4 = new javax.swing.JMenuItem();
+        mCreacion = new javax.swing.JMenu();
+        miCrearEstructura = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        mCrearTabla.setText("Crear Tabla");
+        jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel1.setText("Para comenzar se ha de disponer de \nuna base de datos en mysql llamada \n\"Instituto\" ");
 
-        jMenuItem1.setText("jMenuItem1");
-        mCrearTabla.add(jMenuItem1);
+        jLabel2.setFont(new java.awt.Font("Times New Roman", 1, 14)); // NOI18N
+        jLabel2.setText("Esta debe ser creada manualmente ya sea mediante código o en el cliente gráfico MySQLWorkBench");
 
-        jMenuItem2.setText("jMenuItem2");
-        mCrearTabla.add(jMenuItem2);
+        bCrearTablas.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        bCrearTablas.setText("CREAR TABLAS");
+        bCrearTablas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                bCrearTablasActionPerformed(evt);
+            }
+        });
 
-        jMenuItem3.setText("jMenuItem3");
-        mCrearTabla.add(jMenuItem3);
+        javax.swing.GroupLayout pIntroLayout = new javax.swing.GroupLayout(pIntro);
+        pIntro.setLayout(pIntroLayout);
+        pIntroLayout.setHorizontalGroup(
+            pIntroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pIntroLayout.createSequentialGroup()
+                .addGroup(pIntroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pIntroLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addGroup(pIntroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(pIntroLayout.createSequentialGroup()
+                                .addGap(35, 35, 35)
+                                .addComponent(jLabel1))
+                            .addComponent(jLabel2)))
+                    .addGroup(pIntroLayout.createSequentialGroup()
+                        .addGap(189, 189, 189)
+                        .addComponent(bCrearTablas, javax.swing.GroupLayout.PREFERRED_SIZE, 238, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        pIntroLayout.setVerticalGroup(
+            pIntroLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(pIntroLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel2)
+                .addGap(18, 18, 18)
+                .addComponent(bCrearTablas, javax.swing.GroupLayout.PREFERRED_SIZE, 156, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(126, Short.MAX_VALUE))
+        );
 
-        jMenuItem4.setText("jMenuItem4");
-        mCrearTabla.add(jMenuItem4);
+        mCreacion.setText("Creación tablas");
 
-        jMenuBar1.add(mCrearTabla);
+        miCrearEstructura.setText("Crear estructura");
+        mCreacion.add(miCrearEstructura);
+
+        jMenuBar1.add(mCreacion);
 
         jMenu2.setText("Edit");
         jMenuBar1.add(jMenu2);
@@ -62,15 +122,79 @@ public class Ventana extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 502, Short.MAX_VALUE)
+            .addComponent(pIntro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 379, Short.MAX_VALUE)
+            .addComponent(pIntro, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void bCrearTablasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_bCrearTablasActionPerformed
+        
+        try {
+            sentencia = con.createStatement();
+            //Primera Tabla
+            String cadena = "CREATE TABLE alumno (\n"
+                    + "  `Expediente` INT NOT NULL,\n"
+                    + "  `Nombre` VARCHAR(25) NOT NULL,\n"
+                    + "  `ApellidoP` VARCHAR(25) NOT NULL,\n"
+                    + "  `ApellidoM` VARCHAR(25) NOT NULL,\n"
+                    + "  `FechaNac` DATE NOT NULL,\n"
+                    + "  `Delegado` BINARY NULL,\n"
+                    + "  PRIMARY KEY (`Expediente`),\n"
+                    + "  UNIQUE INDEX `Expediente_UNIQUE` (`Expediente` ASC));\n";
+            sentencia.execute(cadena);
+            
+            String cadena2 = "CREATE TABLE `instituto`.`modulo` (\n"
+                    + "  `Codigo` INT NOT NULL,\n"
+                    + "  `Nombre` VARCHAR(45) NOT NULL,\n"
+                    + "  PRIMARY KEY (`Codigo`));";
+            sentencia.execute(cadena2);
+
+            String cadena3 = "CREATE TABLE `instituto`.`modulo_alumno` (\n"
+                    + "  `idModulo_Alumno` INT NOT NULL,\n"
+                    + "  `Codigo_alumno` INT NOT NULL,\n"
+                    + "  `Codigo_modulo` INT NOT NULL,\n"
+                    + "  PRIMARY KEY (`idModulo_Alumno`),\n"
+                    + "  INDEX `matriculado_m_idx` (`Codigo_modulo` ASC),\n"
+                    + "  INDEX `matriculado_a_idx` (`Codigo_alumno` ASC),\n"
+                    + "  CONSTRAINT `matriculado_m`\n"
+                    + "    FOREIGN KEY (`Codigo_modulo`)\n"
+                    + "    REFERENCES `instituto`.`modulo` (`Codigo`)\n"
+                    + "    ON DELETE RESTRICT\n"
+                    + "    ON UPDATE CASCADE,\n"
+                    + "  CONSTRAINT `matriculado_a`\n"
+                    + "    FOREIGN KEY (`Codigo_alumno`)\n"
+                    + "    REFERENCES `instituto`.`alumno` (`Expediente`)\n"
+                    + "    ON DELETE CASCADE\n"
+                    + "    ON UPDATE CASCADE);";
+            sentencia.execute(cadena3);
+            
+            String cadena4 = "CREATE TABLE profesor (\n"
+                    + "  `R.F.C` CHAR(15) NOT NULL,\n"
+                    + "  `Nombre` VARCHAR(25) NOT NULL,\n"
+                    + "  `ApellidoP` VARCHAR(25) NOT NULL,\n"
+                    + "  `ApellidoM` VARCHAR(25) NOT NULL,\n"
+                    + "  `Direccion` VARCHAR(25) NOT NULL,\n"
+                    + "  `Telefono` CHAR(10) NOT NULL,\n"
+                    + "  `Codigo_modulo` INT NOT NULL,\n"
+                    + "  PRIMARY KEY (`R.F.C`),\n"
+                    + "  UNIQUE INDEX `R.F.C_UNIQUE` (`R.F.C` ASC),\n"
+                    + "  INDEX `imparte` (`Codigo_modulo` ASC),\n"
+                    + "  CONSTRAINT `imparte`\n"
+                    + "    FOREIGN KEY (`Codigo_modulo`)\n"
+                    + "    REFERENCES `instituto`.`modulo` (`Codigo`)\n"
+                    + "    ON DELETE RESTRICT\n"
+                    + "    ON UPDATE CASCADE);";
+            sentencia.execute(cadena4);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(Ventana.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_bCrearTablasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -108,12 +232,13 @@ public class Ventana extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton bCrearTablas;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenuBar jMenuBar1;
-    private javax.swing.JMenuItem jMenuItem1;
-    private javax.swing.JMenuItem jMenuItem2;
-    private javax.swing.JMenuItem jMenuItem3;
-    private javax.swing.JMenuItem jMenuItem4;
-    private javax.swing.JMenu mCrearTabla;
+    private javax.swing.JMenu mCreacion;
+    private javax.swing.JMenuItem miCrearEstructura;
+    private javax.swing.JPanel pIntro;
     // End of variables declaration//GEN-END:variables
 }
